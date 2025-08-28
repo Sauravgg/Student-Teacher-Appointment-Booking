@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>Student-Teacher Appointment Booking</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-calendar-alt"></i> Student-Teacher Appointment Booking</h1>
+            <div id="auth-status">
+                <button id="login-btn" class="btn" type="button">Login</button>
+                <button id="signup-btn" class="btn" type="button">Sign Up</button>
+                <button id="logout-btn" class="btn hidden" type="button">Logout</button>
+                <span id="user-info" class="hidden">Welcome, <span id="user-name"></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="auth-forms" class="card">
+            <div id="login-form" class="form-container">
+                <h2>Login</h2>
+                <form id="login-form-element">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>I am a:</label>
+                        <div class="radio-group">
+                            <input type="radio" id="login-student" name="login-user-type" value="student" checked>
+                            <label for="login-student">Student</label>
+                            <input type="radio" id="login-teacher" name="login-user-type" value="teacher">
+                            <label for="login-teacher">Teacher</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p class="form-switch">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+                </form>
+            </div>
+
+            <div id="signup-form" class="form-container hidden">
+                <h2>Sign Up</h2>
+                <form id="signup-form-element">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name:</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email:</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password:</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password:</label>
+                        <input type="password" id="signup-confirm-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>I am a:</label>
+                        <div class="radio-group">
+                            <input type="radio" id="signup-student" name="signup-user-type" value="student" checked>
+                            <label for="signup-student">Student</label>
+                            <input type="radio" id="signup-teacher" name="signup-user-type" value="teacher">
+                            <label for="signup-teacher">Teacher</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <p class="form-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="app-content" class="hidden">
+            <!-- Student View -->
+            <div id="student-view" class="role-view hidden">
+                <div class="card">
+                    <h2>Book an Appointment</h2>
+                    <form id="book-appointment-form">
+                        <div class="form-group">
+                            <label for="teacher-select">Select Teacher:</label>
+                            <select id="teacher-select" required>
+                                <option value="">-- Select Teacher --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-date">Date:</label>
+                            <input type="date" id="appointment-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-time">Time Slot:</label>
+                            <select id="appointment-time" required disabled>
+                                <option value="">-- Select Date First --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-reason">Reason for Appointment:</label>
+                            <textarea id="appointment-reason" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Book Appointment</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>My Appointments</h2>
+                    <div id="student-appointments" class="appointments-list">
+                        <p class="empty-state">No appointments booked yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher View -->
+            <div id="teacher-view" class="role-view hidden">
+                <div class="card">
+                    <h2>Manage Availability</h2>
+                    <form id="availability-form">
+                        <div class="form-group">
+                            <label for="availability-date">Date:</label>
+                            <input type="date" id="availability-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Available Time Slots:</label>
+                            <div id="time-slots-container" class="time-slots">
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-9am" name="time-slot-9am" value="09:00 AM">
+                                    <label for="slot-9am">09:00 AM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-10am" name="time-slot-10am" value="10:00 AM">
+                                    <label for="slot-10am">10:00 AM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-11am" name="time-slot-11am" value="11:00 AM">
+                                    <label for="slot-11am">11:00 AM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-12pm" name="time-slot-12pm" value="12:00 PM">
+                                    <label for="slot-12pm">12:00 PM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-1pm" name="time-slot-1pm" value="01:00 PM">
+                                    <label for="slot-1pm">01:00 PM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-2pm" name="time-slot-2pm" value="02:00 PM">
+                                    <label for="slot-2pm">02:00 PM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-3pm" name="time-slot-3pm" value="03:00 PM">
+                                    <label for="slot-3pm">03:00 PM</label>
+                                </div>
+                                <div class="time-slot-item">
+                                    <input type="checkbox" id="slot-4pm" name="time-slot-4pm" value="04:00 PM">
+                                    <label for="slot-4pm">04:00 PM</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Availability</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Upcoming Appointments</h2>
+                    <div id="teacher-appointments" class="appointments-list">
+                        <p class="empty-state">No appointments scheduled yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Student-Teacher Appointment Booking System</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="/script.js"></script>
+</body>
+
+</html>
